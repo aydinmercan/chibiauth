@@ -1,0 +1,15 @@
+== Testing
+
+=== CI
+
+* _Treehouse Woodpecker_:
+** Building and built-in tests.
+
+* _GitHub Actions_: Since the free-tier environments aren't super powerful, only the following tasks are done:
+** Lints
+** Auditing dependencies against the https://rustsec.org[RUSTSEC advisory database].
+
+
+=== Fuzzing
+
+I will probably setup a continous fuzzing in a private machine some day.

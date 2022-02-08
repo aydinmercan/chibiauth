@@ -1,0 +1,26 @@
+[package]
+name = "chibiauth"
+version = "0.0.1-trunk"
+edition = "2021"
+rust-version = "1.58.1"
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.4", features = ["http2"] }
+clap = { version = "3", features = ["derive"] }
+rusqlite = { version = "0.26", features = ["chrono"] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1.16", features = ["full"] }
+toml = "0.5"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["parking_lot"] }
+
+[profile.release]
+codegen-units = 1
+incremental = false
+lto = "fat"
+panic = "abort"
+
+[profile.smaller]
+inherits = "release"
+opt-level = "s"

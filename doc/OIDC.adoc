@@ -1,0 +1,6 @@
+== OpenID Connect Standards Compliance
+
+
+=== Standards Non-Compliance
+
+ChibiAuth chooses to be non-compatible with various sections.
