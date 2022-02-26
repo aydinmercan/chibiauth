@@ -4,3 +4,8 @@
 === Standards Non-Compliance
 
 ChibiAuth chooses to be non-compatible with various sections.
+
+* In *Section 5.1*, the `gender` standard claim specifies that the strings "male" and "female" must be accepted with accepting other genders being optional.
+ChibiAuth gives doesn't recognize this bias and accepts empty and arbitrary limited strings with no special treatment to any cultural bias.
+The field is limited in characters to prevent maliciously filling the database. If 256 characters aren't enough please do let me know.
+Plus I am not very convinces that filling the database via malicously large fields is a relevant issue.

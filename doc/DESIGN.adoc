@@ -1,0 +1,7 @@
+== Random Design Choices
+
+=== Password Reset
+
+We use the https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels[Split Tokens approach].
+A 256-bit random token is split in half and BLAKE2 is used as the hash function.
+Argon2 already uses BLAKE2 and is very usable so it makes sense to use it and not stuff the binary.

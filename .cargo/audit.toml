@@ -1,8 +1,3 @@
-[advisories]
-ignore = [
-    "RUSTSEC-2020-0159",
-]
-
 [output]
 quiet = false
 deny = ["warnings"]

@@ -1,40 +1,43 @@
-mod config;
 mod controller;
+mod database;
 
-use anyhow::{bail, Result};
+use std::collections::HashMap;
+use std::sync::Arc;
+
+use anyhow::Result;
 use clap::Parser;
-use rusqlite::Connection;
+use parking_lot::RwLock;
 
-use crate::config::read_to_config;
+use crate::controller::setup_router;
+
+pub type CsrfMap = RwLock<HashMap<String, String>>;
 
 #[derive(Parser)]
 struct Args {
     #[clap(short, long)]
-    pub config: String,
+    pub database: String,
+
+    #[clap(short, long)]
+    pub port: u16,
 }
 
-fn setup_db_conn_and_for_replication(path: String) -> Result<Connection> {
-    let db = Connection::open(path)?;
+fn setup_default_subscriber() -> Result<()> {
+    tracing_subscriber::fmt::init();
 
-    let mode: String = db.pragma_update_and_check(None, "journal_mode", "WAL", |row| row.get(0))?;
-
-    if mode != "wal" {
-        bail!("couldn't set journaling to WAL");
-    }
-
-    db.pragma_update(None, "busy_timeout", "5000")?;
-    db.pragma_update(None, "synchronous", "NORMAL")?;
-
-    Ok(db)
+    Ok(())
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = Args::parse();
 
-    let config = read_to_config(args.config)?;
+    setup_default_subscriber()?;
 
-    let db = setup_db_conn_and_for_replication(config.database)?;
+    let csrf_map = Arc::new(RwLock::new(HashMap::<String, String>::new()));
+
+    let db = crate::database::setup_connection_and_for_replication(args.database)?;
+
+    let router = setup_router(csrf_map);
 
     Ok(())
 }
