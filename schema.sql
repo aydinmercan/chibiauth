@@ -28,6 +28,18 @@ CREATE TABLE IF NOT EXISTS oidc_claims (
     updated_at            INTEGER
 ) STRICT;
 
+CREATE TABLE IF NOT EXISTS public_jwk (
+    key_id    TEXT PRIMARY KEY NOT NULL,
+    algorithm TEXT NOT NULL,
+    pem       TEXT NOT NULL
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS secret_jwk (
+    key_id    TEXT PRIMARY KEY NOT NULL,
+    algorithm TEXT NOT NULL,
+    secret    TEXT NOT NULL
+) STRICT;
+
 CREATE TABLE IF NOT EXISTS sessions (
     cookie BLOB PRIMARY KEY NOT NULL,
     uuid   BLOB NOT NULL REFERENCES users(uuid) ON DELETE CASCADE
@@ -36,6 +48,6 @@ CREATE TABLE IF NOT EXISTS sessions (
 CREATE TABLE IF NOT EXISTS reset_token (
     selector   TEXT PRIMARY KEY NOT NULL,
     uuid       BLOB NOT NULL REFERENCES users(uuid) ON DELETE CASCADE,
-    verifier   TEXT NOT NULL
-    expires_at TEXT NOT NULL,
+    verifier   TEXT NOT NULL,
+    expires_at TEXT NOT NULL
 ) STRICT;

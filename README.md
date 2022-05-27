@@ -11,7 +11,7 @@ For administration and usage, a reference handbook will be provided in the futur
 ## Usage
 
 ```sh
-chibiauth --database=/path/to/database/of/chibiauth.db --port 9909
+chibiauth run --database=/path/to/database/of/chibiauth.db --port 9909 --base-url 'https://example.com'
 ```
 
 * ChibiAuth will bind to localhost, bring your own TLS terminator.

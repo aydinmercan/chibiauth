@@ -1,43 +1,113 @@
 mod controller;
 mod database;
+mod engine;
+mod server;
 
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::option::Option;
+use std::process::{ExitCode, Termination};
 
 use anyhow::Result;
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use parking_lot::RwLock;
-
-use crate::controller::setup_router;
 
 pub type CsrfMap = RwLock<HashMap<String, String>>;
 
-#[derive(Parser)]
-struct Args {
-    #[clap(short, long)]
-    pub database: String,
+#[repr(u8)]
+enum ServerResult {
+    Success = 0,
+    Failure = 1,
+}
 
-    #[clap(short, long)]
-    pub port: u16,
+impl Termination for ServerResult {
+    fn report(self) -> ExitCode {
+        ExitCode::from(self as u8)
+    }
+}
+
+#[derive(Parser)]
+#[clap(version)]
+struct Args {
+    #[clap(subcommand)]
+    command: Command,
+}
+
+#[derive(Subcommand)]
+enum Command {
+    /// Start the server
+    Run {
+        #[clap(short, long)]
+        database: String,
+
+        #[clap(short, long)]
+        url: String,
+
+        #[clap(short, long)]
+        port: u16,
+    },
+
+    /// Initialize the database and/or regenerate public identities
+    Init {
+        #[clap(short, long)]
+        database: String,
+    },
+
+    /// Control API keys
+    Api {
+        #[clap(short, long)]
+        database: String,
+
+        #[clap(short, long)]
+        generate: bool,
+
+        #[clap(short, long)]
+        revoke: Option<String>,
+
+        #[clap(short = 'R', long)]
+        revoke_all: bool,
+    },
 }
 
 fn setup_default_subscriber() -> Result<()> {
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt().pretty().init();
+
+    std::panic::set_hook(Box::new(|panic| {
+        if let Some(location) = panic.location() {
+            tracing::error!(
+                message = %panic,
+                panic.file = location.file(),
+                panic.line = location.line(),
+                panic.column = location.column(),
+            );
+        } else {
+            tracing::error!(message = %panic);
+        }
+    }));
 
     Ok(())
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
+fn main() -> ServerResult {
+    if setup_default_subscriber().is_err() {
+        return ServerResult::Failure;
+    }
+
     let args = Args::parse();
 
-    setup_default_subscriber()?;
+    match args.command {
+        Command::Init { database } => {}
+        Command::Run {
+            database,
+            port,
+            url,
+        } => {}
+        Command::Api {
+            database,
+            generate,
+            revoke,
+            revoke_all,
+        } => {}
+    }
 
-    let csrf_map = Arc::new(RwLock::new(HashMap::<String, String>::new()));
-
-    let db = crate::database::setup_connection_and_for_replication(args.database)?;
-
-    let router = setup_router(csrf_map);
-
-    Ok(())
+    ServerResult::Success
 }
