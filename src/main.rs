@@ -6,10 +6,10 @@ mod server;
 use std::collections::HashMap;
 use std::option::Option;
 use std::process::{ExitCode, Termination};
+use std::sync::RwLock;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
-use parking_lot::RwLock;
 
 pub type CsrfMap = RwLock<HashMap<String, String>>;
 
