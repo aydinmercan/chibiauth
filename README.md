@@ -17,6 +17,16 @@ chibiauth run --database=/path/to/database/of/chibiauth.db --port 9909 --base-ur
 * ChibiAuth will bind to localhost, bring your own TLS terminator.
 * The database is just a SQLite file, feel free to use something like litestream.
 
+## Development
+
+We prefer commit signing via SSH. The allowed signers are listed in `.gitsigners`.
+To verify an entry such as following might be needed in `./.git/config`:
+
+```ini
+[gpg.ssh]
+    allowedSignersFile = .gitsigners
+```
+
 ## License
 
 This repository is licensed under the EUPL-1.2. An English copy of the license text is available under `LICENSE`.
