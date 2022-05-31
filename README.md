@@ -20,7 +20,7 @@ chibiauth run --database=/path/to/database/of/chibiauth.db --port 9909 --base-ur
 ## Development
 
 We prefer commit signing via SSH. The allowed signers are listed in `.gitsigners`.
-To verify an entry such as following might be needed in `./.git/config`:
+To verify, a gitconfig entry such as the following is likely needed:
 
 ```ini
 [gpg.ssh]
