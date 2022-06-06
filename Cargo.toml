@@ -1,9 +1,11 @@
 [package]
 name = "chibiauth"
 version = "0.0.1"
+description = "Naive OpenID provider server"
+authors = ["Aydin Mercan <aydin@mercan.dev>"]
 edition = "2021"
 license = "EUPL-1.2"
-authors = ["Aydin Mercan <aydin@mercan.dev>"]
+keywords = ["sso", "oidc", "oauth", "oauth2"]
 rust-version = "1.61"
 
 [dependencies]
