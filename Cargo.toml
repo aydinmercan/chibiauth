@@ -1,0 +1,13 @@
+[package]
+name = "chibiauth"
+description = "Naive OpenID provider server"
+version = "0.0.0"
+authors = ["Aydin Mercan <aydin@mercan.dev>"]
+license = "EUPL-1.2"
+readme = "README.md"
+keywords = ["sso", "oidc", "oauth", "oauth2"]
+edition = "2021"
+rust-version = "1.64"
+exclude = ["doc/", "example/"]
+
+[dependencies]
