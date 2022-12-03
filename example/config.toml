@@ -1,0 +1,13 @@
+[server]
+host = "127.0.0.1"
+port = 9909
+database = "example/database.db"
+base-url = "https://example.com"
+
+[server.tls]
+offload = false
+certificate = "example/cert.pem"
+private-key = "example/priv.pem"
+
+[server.mtls]
+enabled = false

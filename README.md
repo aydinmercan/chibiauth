@@ -1,6 +1,6 @@
 # ChibiAuth
 
-Naive OpenID Provider.
+Naive IAM server.
 
 ## Development
 
